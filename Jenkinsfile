@@ -12,13 +12,16 @@ pipeline {
             ''' 
       }
     }
-    stage ('Check-Git-Secrets') {
+    stage ('Source Composition Analysis') {
       steps {
-        sh 'docker run gesellix/trufflehog --json https://github.com/Fatheem96/CICDEx.git > trufflehog'
-        sh 'cat trufflehog'
+         sh 'rm owasp* || true'
+         sh 'wget "https://raw.githubusercontent.com/Fatheem96/CICDEx/master/owasp-dependency-check.sh" '
+         sh 'chmod +x owasp-dependency-check.sh'
+         sh 'bash owasp-dependency-check.sh'
+         sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
+        
       }
     }
-    
     stage ('Build') {
       steps {
         sh 'mvn clean package' 
