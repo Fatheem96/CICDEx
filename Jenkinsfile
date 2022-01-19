@@ -12,6 +12,14 @@ pipeline {
             ''' 
       }
     }
+     stage ('SAST') {
+      steps {
+        withSonarQubeEnv('sonar') {
+          sh 'mvn sonar:sonar'
+          sh 'cat target/sonar/report-task.txt'
+        }
+      }
+     }
     stage ('Source Composition Analysis') {
       steps {
          sh 'rm owasp* || true'
@@ -19,7 +27,6 @@ pipeline {
          sh 'chmod +x dependency-check.sh'
          sh 'bash dependency-check.sh'
          sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
-        
       }
     }
     stage ('Build') {
