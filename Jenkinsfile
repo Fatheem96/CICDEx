@@ -12,7 +12,7 @@ pipeline {
             ''' 
       }
     }
-    stage ('Source Composition Analysis')
+    stage ('Source Composition Analysis') {
     steps {
       sh 'wget "https://raw.githubusercontent.com/Fatheem96/CICDEx/master/owasp-dependency-check.sh" '
       sh 'chmod +X owasp-dependency-check.sh'
@@ -24,6 +24,5 @@ pipeline {
         sh 'mvn clean package' 
       }
      }
-    }
-   }
+    
         
